@@ -44,7 +44,7 @@ def getAllValues():
     val["pos_reach"] = PosReach.get() # Pos Reach
     err = err + validateInput(val["pos_reach"],PosReach)
 
-    val["rpm"] = Rpm.get() # Pos Reach
+    val["rpm"] = Rpm.get() # RPM
     err = err + validateInput(val["rpm"],Rpm)
 
     val["mode"] = Mode.get() # Mode
