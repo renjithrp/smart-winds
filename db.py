@@ -10,6 +10,7 @@ CREATE_TABLE_QUERY = """ CREATE TABLE IF NOT EXISTS data (
                                         spool_diaz NUMERIC, 
                                         wire_guage NUMERIC, 
                                         no_of_turns NUMERIC,
+                                        rpm NUMERIC,
                                         int_position NUMERIC, 
                                         turns_count NUMERIC, 
                                         pos_reach NUMERIC, 
@@ -46,13 +47,13 @@ def get_connection():
 conn = get_connection()
 
 def update(values):
-
     columns = ', '.join(values.keys())
     placeholders = ', '.join('?' * len(values))
     sql = 'INSERT INTO data ({}) VALUES ({})'.format(columns, placeholders)
     values = [int(x) if isinstance(x, bool) else x for x in values.values()]
     c = conn.cursor()
     c.execute(sql, values)
+    conn.commit()
     return True
     
 

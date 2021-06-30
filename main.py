@@ -17,7 +17,7 @@ def validateInput(v,obj):
         return 1
 
 def notify(message):
-    Label(root, text=message, bg=c.BG_COLOR, font=c.LABEL_FONT).place(x=20, y=400)
+    Label(root, text=message, bg=c.BG_COLOR, font=c.LABEL_FONT).place(x=20, y=460)
 
 # Get All input and radio butten values in a map
 def getAllValues():
@@ -43,6 +43,9 @@ def getAllValues():
 
     val["pos_reach"] = PosReach.get() # Pos Reach
     err = err + validateInput(val["pos_reach"],PosReach)
+
+    val["rpm"] = Rpm.get() # Pos Reach
+    err = err + validateInput(val["rpm"],Rpm)
 
     val["mode"] = Mode.get() # Mode
     if err == 0:
@@ -112,11 +115,20 @@ def Load():
     set_text(values["spool_diaz"],SpoolDiaz)
     set_text(values["wire_guage"],WireGuage)
     set_text(values["no_of_turns"],NoOfTurns)
+    set_text(values["rpm"],Rpm)
     set_text(values["int_position"],IntPosition)
     set_text(values["turns_count"],TurnsCount)
     set_text(values["pos_reach"],PosReach)
     Mode.set(values["mode"])
     notify("Data successfully loaded..")
+
+def createLabels(lables,x,y,padding):
+  
+    i = 0
+    for text in lables:
+        Label(root, text=text, bg=c.BG_COLOR, font=c.LABEL_FONT).place(x=x, y=(y + i))
+        i = i + padding
+    return
 
 root = Tk()
 Mode = tk.StringVar()
@@ -128,11 +140,8 @@ root.title(c.HEADER_TEXT)
 
 Label(root, text=c.HEADER_TEXT,  bg=c.BG_COLOR, fg="white", font="none 26").pack(side=TOP)
 
-
-Label(root, text='Spool Width', bg=c.BG_COLOR, font=c.LABEL_FONT).place(x=15, y=87)
-Label(root, text='Spool Diaz', bg=c.BG_COLOR, font=c.LABEL_FONT).place(x=15, y=147)
-Label(root, text='Wire Guage', bg=c.BG_COLOR, font=c.LABEL_FONT).place(x=15, y=207)
-Label(root, text='No Of Turns', bg=c.BG_COLOR, font=c.LABEL_FONT).place(x=15, y=267)
+column1_labels = ["Spool Width","Spool Diaz","Wire Guage","No Of Turns","RPM"]
+createLabels(column1_labels,15,85,60)
 
 SpoolWidth=Entry(root)
 SpoolWidth.place(height=30, width=50,x=100, y=80)
@@ -146,10 +155,13 @@ WireGuage.place(height=30, width=50,x=100, y=200)
 NoOfTurns=Entry(root)
 NoOfTurns.place(height=30, width=50,x=100, y=260)
 
-Label(root, text='Mode', bg=c.BG_COLOR, font=c.LABEL_FONT).place(x=200, y=75)
+Rpm=Entry(root)
+Rpm.place(height=30, width=50,x=100, y=320)
+
+Label(root, text='Mode', bg=c.BG_COLOR, font=c.LABEL_FONT).place(x=200, y=85)
 
 frame=Frame(root, width=0, height=0, bg=c.BG_COLOR)
-frame.place(x=250, y=75)
+frame.place(x=250, y=85)
 ARBEES=[
 ('Manual', '0'), 
 ('Auto', '1'), 
@@ -157,37 +169,36 @@ ARBEES=[
 for text, mode in ARBEES:
 	Radiobutton(frame, text=text, variable=Mode, value=mode, bg=c.BG_COLOR, font=c.LABEL_FONT).pack(side='left', anchor = 'w')
 
+column2_labels = ["Int Position","Turns Count","Pos Reach"]
+createLabels(column2_labels,200,205,60)
 
-Label(root, text='Int Position', bg=c.BG_COLOR, font=c.LABEL_FONT).place(x=200, y=147)
-Label(root, text='Turns Count', bg=c.BG_COLOR, font=c.LABEL_FONT).place(x=200, y=207)
-Label(root, text='Pos Reach', bg=c.BG_COLOR, font=c.LABEL_FONT).place(x=200, y=267)
 
 IntPosition=Entry(root)
-IntPosition.place(height=30, width=50,x=275, y=140)
+IntPosition.place(height=30, width=50,x=275, y=200)
 
 TurnsCount=Entry(root)
-TurnsCount.place(height=30, width=50,x=275, y=200)
+TurnsCount.place(height=30, width=50,x=275, y=260)
 
 PosReach=Entry(root)
-PosReach.place(height=30, width=50,x=275, y=260)
+PosReach.place(height=30, width=50,x=275, y=320)
 
 
 # Direction Buttons
-Label(root, padx = 25,pady = 10,text='Direction', bg=c.BG_COLOR, font=c.LABEL_FONT).place(x=600, y=60)
+Label(root, padx = 25,pady = 10,text='Direction', bg=c.BG_COLOR, font=c.LABEL_FONT).place(x=485, y=60)
 
-Button(root, padx = 25,pady = 10,text='Forward', bg=c.BUTTON_COLOR, font=c.LABEL_FONT, command=Forward).place(x=550, y=100)
-Button(root, padx = 25,pady = 10,text='Reverse', bg=c.BUTTON_COLOR, font=c.LABEL_FONT, command=Reverse).place(x=700, y=100)
+Button(root, padx = 25,pady = 10,text='Forward', bg=c.BUTTON_COLOR, font=c.LABEL_FONT, command=Forward).place(x=400, y=100)
+Button(root, padx = 25,pady = 10,text='Reverse', bg=c.BUTTON_COLOR, font=c.LABEL_FONT, command=Reverse).place(x=550, y=100)
 
-Button(root, padx = 35,pady = 10,text='Start', bg=c.BUTTON_COLOR, font=c.LABEL_FONT, command=Start).place(x=550, y=160)
-Button(root,padx = 35,pady = 10, text='Stop', bg=c.BUTTON_COLOR, font=c.LABEL_FONT, command=Stop).place(x=700, y=160)
+Button(root, padx = 35,pady = 10,text='Start', bg=c.BUTTON_COLOR, font=c.LABEL_FONT, command=Start).place(x=400, y=160)
+Button(root,padx = 35,pady = 10, text='Stop', bg=c.BUTTON_COLOR, font=c.LABEL_FONT, command=Stop).place(x=550, y=160)
 
-Button(root, padx = 35,pady = 10,text='Pause', bg=c.BUTTON_COLOR, font=c.LABEL_FONT, command=Pause).place(x=615, y=220)
+Button(root, padx = 35,pady = 10,text='Pause', bg=c.BUTTON_COLOR, font=c.LABEL_FONT, command=Pause).place(x=465, y=220)
 
 
 
 # Save and load button 
-Button(root, padx = 25,pady = 10,text='Save', bg=c.BUTTON_COLOR, font=c.LABEL_FONT, command=Save).place(x=50, y=350)
+Button(root, padx = 25,pady = 10,text='Save', bg=c.BUTTON_COLOR, font=c.LABEL_FONT, command=Save).place(x=50, y=400)
 
-Button(root, padx = 25,pady = 10,text='Load', bg=c.BUTTON_COLOR, font=c.LABEL_FONT, command=Load).place(x=200, y=350)
+Button(root, padx = 25,pady = 10,text='Load', bg=c.BUTTON_COLOR, font=c.LABEL_FONT, command=Load).place(x=200, y=400)
 
 root.mainloop()
